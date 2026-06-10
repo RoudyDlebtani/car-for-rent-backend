@@ -4,8 +4,8 @@ const config = require('../config/env');
 
 // Build the pool from DATABASE_URL if present, otherwise from discrete PG* vars.
 const poolConfig = config.databaseUrl
-  ? { connectionString: config.databaseUrl, ssl: config.pgSsl ? { rejectUnauthorized: false } : false }
-  : { ...config.pg, ssl: config.pgSsl ? { rejectUnauthorized: false } : false };
+  ? { connectionString: config.databaseUrl, ssl: config.pgSsl ? { rejectUnauthorized: false } : false, max: config.pgPoolMax }
+  : { ...config.pg, ssl: config.pgSsl ? { rejectUnauthorized: false } : false, max: config.pgPoolMax };
 
 const pool = new Pool(poolConfig);
 

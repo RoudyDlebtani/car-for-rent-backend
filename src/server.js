@@ -84,4 +84,11 @@ async function start() {
   });
 }
 
-start();
+// Only start a long-lived server when run directly (local dev / Render).
+// On Vercel the app is imported by api/index.js and served per-request,
+// so there is no listen() and no fail-fast exit on cold starts.
+if (require.main === module) {
+  start();
+}
+
+module.exports = app;

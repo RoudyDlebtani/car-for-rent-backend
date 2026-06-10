@@ -20,6 +20,11 @@ const config = {
   // Enable SSL for hosted Postgres (Neon/Supabase). Off for local.
   pgSsl: String(process.env.PGSSL || '').toLowerCase() === 'true',
 
+  // Pool size per process. Serverless (Vercel) runs many short-lived instances,
+  // each with its own pool, so keep it small there to avoid exhausting Neon's
+  // connection limit. Override with PG_POOL_MAX.
+  pgPoolMax: parseInt(process.env.PG_POOL_MAX || (process.env.VERCEL ? '2' : '10'), 10),
+
   // Rate limiting — protects the free demo. Generous global limit on all reads,
   // strict limits on the only DB-writing paths (auth + favorites writes).
   rateLimit: {
@@ -32,6 +37,11 @@ const config = {
 };
 
 if (config.jwtSecret === 'dev-insecure-secret-change-me') {
+  // In production a forgotten JWT_SECRET would make every token forgeable —
+  // refuse to boot instead of shipping that silently.
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+    throw new Error('[config] JWT_SECRET must be set in production. Add it to the host\'s environment variables.');
+  }
   console.warn('[config] WARNING: JWT_SECRET not set — using an insecure dev default.');
 }
 
