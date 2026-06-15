@@ -5,7 +5,7 @@ const config = require('./config/env');
 const { verifyConnection } = require('./db/pool');
 const { errorHandler } = require('./middleware/errorHandler');
 const { apiLimiter } = require('./middleware/rateLimit');
-
+ 
 const vehiclesRouter = require('./routes/vehicles');
 const categoriesRouter = require('./routes/categories');
 const authRouter = require('./routes/auth');
