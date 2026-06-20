@@ -18,7 +18,7 @@ const app = express();
 app.set('trust proxy', 1);
 
 // ── Middleware ──────────────────────────────────────────────────────────────
-app.use(cors({ origin: config.clientOrigin })); // allow the React dev server
+app.use(cors({ origin: config.clientOrigins })); // allow the React dev server(s)
 app.use(express.json());
 
 // Generous global rate limit on the whole API (cheap GETs); the auth + favorites
@@ -65,7 +65,7 @@ async function start() {
     console.log('─────────────────────────────────────────────');
     console.log('  Cars for Rent — Backend API');
     console.log(`  Listening on http://localhost:${config.port}`);
-    console.log(`  CORS origin:  ${config.clientOrigin}`);
+    console.log(`  CORS origin:  ${config.clientOrigins.join(', ')}`);
     console.log('─────────────────────────────────────────────');
     console.log('[TEST] GET    /api/health');
     console.log('[TEST] GET    /api/categories');

@@ -8,7 +8,7 @@ const LIST_COLUMNS = `
   v.location_city, v.location_country, v.availability_status,
   v.is_featured,
   c.code AS category_code, c.name AS category_name,
-  img.url AS image_url
+  TRIM(E' \t\n\r' FROM img.url) AS image_url
 `;
 
 // LEFT JOIN the single primary image (uq_vehicle_images_one_primary guarantees at most one).
@@ -111,7 +111,7 @@ async function getVehicleBySlug(slug) {
   delete vehicle.search_vector; // internal tsvector, not for the client
 
   const images = await query(
-    `SELECT id, url, alt_text, sort_order, is_primary
+    `SELECT id, TRIM(E' \t\n\r' FROM url) AS url, alt_text, sort_order, is_primary
      FROM vehicle_images WHERE vehicle_id = $1
      ORDER BY is_primary DESC, sort_order ASC`,
     [vehicle.id]

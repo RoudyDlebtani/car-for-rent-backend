@@ -3,7 +3,12 @@ require('dotenv').config();
 
 const config = {
   port: parseInt(process.env.PORT || '5000', 10),
-  clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
+  // Allowed CORS origins. CLIENT_ORIGIN may be a comma-separated list; default
+  // covers both common CRA dev ports (3000, and 3001 when 3000 is taken).
+  clientOrigins: (process.env.CLIENT_ORIGIN || 'http://localhost:3000,http://localhost:3001')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean),
 
   jwtSecret: process.env.JWT_SECRET || 'dev-insecure-secret-change-me',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
