@@ -49,3 +49,4 @@ curl localhost:5000/api/favorites -H "Authorization: Bearer $TOKEN"
 ## Deployment note
 Config is env-driven. To deploy on Neon/Supabase + Render, set `DATABASE_URL` and `PGSSL=true`
 instead of the discrete `PG*` vars — no code changes needed.
+
